@@ -21,7 +21,6 @@ fonts: $(FONTS)
 	tar xf $(FONTNAME).tar.gz -C $(FONTNAME)
 	rm $(FONTNAME).tar.gz
 	find $(FONTNAME) -name '*.otf' -print0 | xargs -0 open
-	rm -r $(FONTNAME)
 
 mjolnir: /Applications/Mjolnir.app
 	brew install lua
