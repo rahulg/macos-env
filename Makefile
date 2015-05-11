@@ -32,7 +32,7 @@ mjolnir: $(MJOLNIR_APP)
 	brew install lua
 	luarocks-5.2 install mjolnir.hotkey
 	luarocks-5.2 install mjolnir.application
-	cp -rv .mjolnir $(HOME)/.mjolnir
+	cp -rv .mjolnir $(HOME)
 
 $(MJOLNIR_APP):
 	curl -fsSL https://github.com/sdegutis/mjolnir/releases/download/0.4.3/Mjolnir-0.4.3.tgz -o mjolnir.tgz
