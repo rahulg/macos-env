@@ -1,11 +1,17 @@
 .PHONY: all terminal fonts mjolnir always clean
 
+MJOLNIR_APP=/Applications/Mjolnir.app
+KEYBINDINGS=/Library/KeyBindings/DefaultKeyBinding.dict
 TERMINAL_CONFS=$(wildcard *.terminal)
 FONTS=source-sans-pro/archive/2.010R-ro/1.065R-it.tar.gz \
       source-serif-pro/archive/1.017R.tar.gz \
       source-code-pro/archive/1.017R.tar.gz
 
-all: fonts terminal mjolnir
+ifeq ($(shell uname),Darwin)
+	TARGETS+= fonts terminal mjolnir $(KEYBINDINGS)
+endif
+
+all: $(TARGETS)
 
 terminal: $(TERMINAL_CONFS)
 
@@ -22,17 +28,21 @@ fonts: $(FONTS)
 	rm $(FONTNAME).tar.gz
 	find $(FONTNAME) -name '*.otf' -print0 | xargs -0 open
 
-mjolnir: /Applications/Mjolnir.app
+mjolnir: $(MJOLNIR_APP)
 	brew install lua
 	luarocks-5.2 install mjolnir.hotkey
 	luarocks-5.2 install mjolnir.application
 	cp -rv .mjolnir $(HOME)/.mjolnir
 
-/Applications/Mjolnir.app:
+$(MJOLNIR_APP):
 	curl -fsSL https://github.com/sdegutis/mjolnir/releases/download/0.4.3/Mjolnir-0.4.3.tgz -o mjolnir.tgz
 	tar xf mjolnir.tgz -C /Applications
 	open $@
 	rm -f mjolnir.tgz
+
+$(KEYBINDINGS): DefaultKeyBinding.dict
+	mkdir -p ~/Library/KeyBindings/
+	cp -v $(realpath $<) $@
 
 always:
 	true
