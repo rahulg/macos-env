@@ -1,4 +1,4 @@
-.PHONY: all terminal fonts mjolnir always
+.PHONY: all terminal fonts mjolnir always clean
 
 TERMINAL_CONFS=$(wildcard *.terminal)
 FONTS=source-sans-pro/archive/2.010R-ro/1.065R-it.tar.gz \
@@ -37,3 +37,5 @@ mjolnir: /Applications/Mjolnir.app
 always:
 	true
 
+clean:
+	rm -rf source-{sans,serif,code}-pro
