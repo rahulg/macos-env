@@ -5,7 +5,7 @@ FONTS=source-sans-pro/archive/2.010R-ro/1.065R-it.tar.gz \
       source-serif-pro/archive/1.017R.tar.gz \
       source-code-pro/archive/1.017R.tar.gz
 
-all: terminal fonts mjolnir
+all: fonts terminal mjolnir
 
 terminal: $(TERMINAL_CONFS)
 
