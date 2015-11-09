@@ -1,3 +1,4 @@
+.NOTPARALLEL:
 .PHONY: all fonts mjolnir terminfo always clean
 
 MJOLNIR_APP=/Applications/Mjolnir.app
