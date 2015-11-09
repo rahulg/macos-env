@@ -1,22 +1,16 @@
-.PHONY: all terminal fonts mjolnir always clean
+.PHONY: all fonts mjolnir always clean
 
 MJOLNIR_APP=/Applications/Mjolnir.app
 KEYBINDINGS=/Library/KeyBindings/DefaultKeyBinding.dict
-TERMINAL_CONFS=$(wildcard *.terminal)
 FONTS=source-sans-pro/archive/2.010R-ro/1.065R-it.tar.gz \
-      source-serif-pro/archive/1.017R.tar.gz \
-      source-code-pro/archive/1.017R.tar.gz
+      source-serif-pro/archive/2.020R-ro/1.075R-it.tar.gz \
+      source-code-pro/archive/2.010R-ro/1.030R-it.tar.gz
 
 ifeq ($(shell uname),Darwin)
-	TARGETS+= fonts terminal mjolnir $(KEYBINDINGS)
+	TARGETS+= fonts mjolnir $(KEYBINDINGS)
 endif
 
 all: $(TARGETS)
-
-terminal: $(TERMINAL_CONFS)
-
-%.terminal: always
-	open $@
 
 fonts: $(FONTS)
 
