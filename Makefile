@@ -2,7 +2,7 @@
 .PHONY: all fonts mjolnir terminfo always clean
 
 MJOLNIR_APP=/Applications/Mjolnir.app
-KEYBINDINGS=/Library/KeyBindings/DefaultKeyBinding.dict
+KEYBINDINGS=~/Library/KeyBindings/DefaultKeyBinding.dict
 FONTS=source-sans-pro/archive/2.020R-ro/1.075R-it.tar.gz \
       source-serif-pro/archive/1.017R.tar.gz \
       source-code-pro/archive/2.010R-ro/1.030R-it.tar.gz
