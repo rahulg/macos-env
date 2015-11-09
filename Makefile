@@ -1,18 +1,21 @@
-.PHONY: all fonts mjolnir always clean
+.PHONY: all fonts mjolnir terminfo always clean
 
 MJOLNIR_APP=/Applications/Mjolnir.app
 KEYBINDINGS=/Library/KeyBindings/DefaultKeyBinding.dict
 FONTS=source-sans-pro/archive/2.010R-ro/1.065R-it.tar.gz \
       source-serif-pro/archive/2.020R-ro/1.075R-it.tar.gz \
       source-code-pro/archive/2.010R-ro/1.030R-it.tar.gz
+TERMINFOS=$(wildcard terminfos/*)
 
 ifeq ($(shell uname),Darwin)
-	TARGETS+= fonts mjolnir $(KEYBINDINGS)
+	TARGETS+= fonts mjolnir terminfo $(KEYBINDINGS)
 endif
 
 all: $(TARGETS)
 
 fonts: $(FONTS)
+
+terminfo: $(TERMINFOS)
 
 %.tar.gz:
 	$(eval FONTNAME := $(shell echo $@ | sed -E 's#(.*)/archive.*#\1#'))
@@ -37,6 +40,9 @@ $(MJOLNIR_APP):
 $(KEYBINDINGS): DefaultKeyBinding.dict
 	mkdir -p ~/Library/KeyBindings/
 	cp -v $(realpath $<) $@
+
+%.tic: always
+	sudo tic $@
 
 always:
 	true
