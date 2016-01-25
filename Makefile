@@ -7,6 +7,12 @@ FONTS=source-sans-pro/archive/2.020R-ro/1.075R-it.tar.gz \
       source-serif-pro/archive/1.017R.tar.gz \
       source-code-pro/archive/2.010R-ro/1.030R-it.tar.gz
 TERMINFOS=$(wildcard terminfos/*)
+ROCKS=mjolnir.hotkey \
+	  mjolnir.application \
+	  mjolnir.fnutils \
+	  mjolnir.geometry \
+	  mjolnir.screen \
+	  mjolnir.keycodes
 
 ifeq ($(shell uname),Darwin)
 	TARGETS+= fonts mjolnir terminfo $(KEYBINDINGS)
@@ -26,11 +32,14 @@ terminfo: $(TERMINFOS)
 	rm $(FONTNAME).tar.gz
 	find $(FONTNAME) -name '*.otf' -print0 | xargs -0 open
 
-mjolnir: $(MJOLNIR_APP)
-	brew install lua
-	luarocks-5.2 install mjolnir.hotkey
-	luarocks-5.2 install mjolnir.application
+mjolnir: $(MJOLNIR_APP) lua $(ROCKS)
 	cp -rv .mjolnir $(HOME)
+
+lua:
+	brew install lua
+
+mjolnir.%: always
+	luarocks-5.2 install $@
 
 $(MJOLNIR_APP):
 	curl -fsSL https://github.com/sdegutis/mjolnir/releases/download/0.4.3/Mjolnir-0.4.3.tgz -o mjolnir.tgz
@@ -46,7 +55,7 @@ $(KEYBINDINGS): DefaultKeyBinding.dict
 	sudo tic $@
 
 always:
-	true
+	@true
 
 clean:
 	rm -rf source-{sans,serif,code}-pro
