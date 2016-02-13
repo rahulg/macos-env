@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -eu
+
+function defer() {
+	local fn=${1}
+	local traps=$(trap -p EXIT | sed -En "s/trap -- '([^']*)' EXIT/\1/p")
+	local sep=$([[ -z ${traps} ]] || echo ';')
+	trap -- "${traps}${sep}${fn}" EXIT
+}
+
+function strap_brew() {
+	if [[ ! -f /usr/local/bin/brew ]]; then
+		local install_rb=$(mktemp)
+		echo ${install_rb}
+		defer "rm ${install_rb}"
+		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install -o ${install_rb}
+		ruby ${install_rb}
+	fi
+	brew tap homebrew/dupes
+	brew tap neovim/neovim
+	brew tap rahulg/hyv
+}
+
+function strap_ansible() {
+	brew install ansible
+	ansible-playbook ./brewtstrap.yml 
+}
+
+strap_brew
+strap_ansible

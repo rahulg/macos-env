@@ -1,0 +1,45 @@
+---
+- hosts: ::1
+  connection: local
+
+  vars:
+    brews:
+      - ansible
+      - bash
+      - clang-format
+      - fish
+      - git
+      - guile
+      - rahulg/hyv/hyv
+      - ipcalc
+      - lua
+      - mtr
+      - neovim/neovim/neovim
+      - nmap
+      - node
+      - opensc
+      - homebrew/dupes/openssh
+      - picocom
+      - pngnq
+      - pwgen
+      - python
+      - python3
+      - racket
+      - reattach-to-user-namespace
+      - ruby
+      - rust
+      - the_platinum_searcher
+      - tmux
+      - youtube-dl
+
+  tasks:
+    - name: update brews
+      homebrew:
+        update_homebrew=yes
+        upgrade_all=yes
+
+    - name: install brews
+      homebrew:
+        name={{ item }}
+        state=present
+      with_items: brews

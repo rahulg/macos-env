@@ -1,5 +1,5 @@
 .NOTPARALLEL:
-.PHONY: all fonts mjolnir terminfo always clean
+.PHONY: all fonts mjolnir terminfo brewtstrap always clean
 
 MJOLNIR_APP=/Applications/Mjolnir.app
 KEYBINDINGS=~/Library/KeyBindings/DefaultKeyBinding.dict
@@ -15,7 +15,7 @@ ROCKS=mjolnir.hotkey \
 	  mjolnir.keycodes
 
 ifeq ($(shell uname),Darwin)
-	TARGETS+= fonts mjolnir terminfo $(KEYBINDINGS)
+	TARGETS+= fonts mjolnir terminfo brewtstrap $(KEYBINDINGS)
 endif
 
 all: $(TARGETS)
@@ -46,6 +46,9 @@ $(MJOLNIR_APP):
 	tar xf mjolnir.tgz -C /Applications
 	open $@
 	rm -f mjolnir.tgz
+
+brewtstrap:
+	bash ./brewtstrap
 
 $(KEYBINDINGS): DefaultKeyBinding.dict
 	mkdir -p ~/Library/KeyBindings/
