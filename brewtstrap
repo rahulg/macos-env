@@ -14,6 +14,7 @@ function strap_brew() {
 		echo ${install_rb}
 		defer "rm ${install_rb}"
 		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install -o ${install_rb}
+		less ${install_rb}
 		ruby ${install_rb}
 	fi
 	brew tap homebrew/dupes
