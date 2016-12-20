@@ -1,5 +1,5 @@
 ---
-- hosts: ::1
+- hosts: localhost
   connection: local
 
   vars:
