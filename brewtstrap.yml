@@ -3,11 +3,17 @@
   connection: local
 
   vars:
+    taps:
+      - homebrew/dupes
+      - neovim/neovim
+      - rahulg/hyv
+
     brews:
       - ansible
       - bash
       - clang-format
       - fish
+      - flake8
       - git
       - guile
       - rahulg/hyv/hyv
@@ -32,14 +38,103 @@
       - tmux
       - youtube-dl
 
+    casks:
+      - mjolnir
+      - xquartz
+
+    rocks:
+      - mjolnir.hotkey
+      - mjolnir.application
+      - mjolnir.fnutils
+      - mjolnir.geometry
+      - mjolnir.screen
+      - mjolnir.keycodes
+
+    fonts:
+      - source-code-pro
+      - source-sans-pro
+      - source-serif-pro
+
+
   tasks:
-    - name: update brews
+    - name: tap brew taps
+      homebrew_tap:
+        name={{ item }}
+        state=present
+      with_items: "{{ taps }}"
+
+    - name: update brew indices
       homebrew:
         update_homebrew=yes
-        upgrade_all=yes
 
     - name: install brews
       homebrew:
         name={{ item }}
         state=present
       with_items: "{{ brews }}"
+
+    - name: install casks
+      homebrew_cask:
+        name={{ item }}
+        state=present
+      with_items: "{{ casks }}"
+
+    - name: install rocks
+      luarocks:
+        name={{ item }}
+        state=present
+        server=http://rocks.moonscript.org
+      with_items: "{{ rocks }}"
+      become: True
+      become_user: root
+
+    - name: create mjolnir config directory
+      file:
+        path=~/.mjolnir
+        state=directory
+        mode=0755
+
+    - name: install mjolnir config
+      copy:
+        src={{ item }}
+        dest=~/.mjolnir/
+      with_fileglob: "mjolnir/*"
+
+    - name: install rtus-run
+      copy:
+        src=rtus-run
+        dest=/usr/local/bin/
+        mode=0755
+
+    - name: symlink rtus-run
+      file:
+        src=rtus-run
+        path=/usr/local/bin/{{ item }}
+        state=link
+        force=yes
+      with_items:
+        - pbcopy
+        - pbpaste
+
+    - name: create KeyBindings directory
+      file:
+        path=~/Library/KeyBindings
+        state=directory
+        mode=0755
+
+    - name: install DefaultKeyBinding.dict
+      copy:
+        src=DefaultKeyBinding.dict
+        dest=~/Library/KeyBindings/DefaultKeyBinding.dict
+
+    - name: install fonts
+      synchronize:
+        src=fonts/{{ item }}/OTF/
+        dest=~/Library/Fonts/
+      with_items: "{{ fonts }}"
+
+    - name: install terminfos
+      command: "tic {{ item }}"
+      with_fileglob: "terminfos/*"
+      become: True
+      become_user: root

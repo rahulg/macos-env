@@ -17,9 +17,6 @@ function strap_brew() {
 		less ${install_rb}
 		ruby ${install_rb}
 	fi
-	brew tap homebrew/dupes
-	brew tap neovim/neovim
-	brew tap rahulg/hyv
 }
 
 function strap_ansible() {

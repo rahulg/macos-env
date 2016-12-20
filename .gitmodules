@@ -1,0 +1,9 @@
+[submodule "files/fonts/source-sans-pro"]
+	path = files/fonts/source-sans-pro
+	url = https://github.com/adobe-fonts/source-sans-pro.git
+[submodule "files/fonts/source-serif-pro"]
+	path = files/fonts/source-serif-pro
+	url = https://github.com/adobe-fonts/source-serif-pro.git
+[submodule "files/fonts/source-code-pro"]
+	path = files/fonts/source-code-pro
+	url = https://github.com/adobe-fonts/source-code-pro.git
