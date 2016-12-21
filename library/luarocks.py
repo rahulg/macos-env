@@ -19,11 +19,12 @@
 
 import re
 # Import module snippets
-from ansible.module_utils.basic import *
+from ansible.module_utils.basic import AnsibleModule
 
 ANSIBLE_METADATA = {
     'status': ['preview'],
-    'version': '1.0'
+    'supported_by': 'community',
+    'version': '1.0',
 }
 
 DOCUMENTATION = '''
@@ -33,6 +34,11 @@ short_description: Manage lua rocks with luarocks
 description:
   - Manage lua rocks with luarocks
 options:
+  deps_mode:
+    description:
+      - How to handle dependencies (corresponds to the --deps-mode flag of luarocks)
+    required: false
+    choices: [ "all", "one", "order", "none" ]
   executable:
     description:
       - The name of the luarocks executable to use
@@ -53,6 +59,11 @@ options:
     description:
       - The name of a luarocks package to install
     required: true
+  override_servers:
+    description:
+      - Whether to override the servers specified in the luarocks config
+    required: false
+    default: no
   state:
     description:
       - The state of the lua rocks
@@ -106,10 +117,12 @@ class Luarocks(object):
         self.executable = kwargs['executable']
         self.name = kwargs['name']
         self.server = kwargs['server']
+        self.override_servers = kwargs['override_servers']
         self.tree = kwargs['tree']
         self.local = kwargs['local']
         self.keep_other_versions = kwargs['keep_other_versions']
         self.version = kwargs['version']
+        self.deps_mode = kwargs['deps_mode']
 
     def _exec(self, args, run_in_check_mode=False, check_rc=True):
         if not self.module.check_mode or (self.module.check_mode and run_in_check_mode):
@@ -125,12 +138,13 @@ class Luarocks(object):
                 cmd.append('--tree={}'.format(self.tree))
 
             if self.server:
-                cmd.append('--server={}'.format(self.server))
+                if self.override_servers:
+                    cmd.append('--only-')
+                else:
+                    cmd.append('--')
+                cmd.append('server={}'.format(self.server))
 
             cmd.extend(args)
-
-            if self.keep_other_versions:
-                cmd.append('--keep')
 
             if self.name:
                 cmd.append(self.name)
@@ -151,10 +165,23 @@ class Luarocks(object):
         return installed
 
     def install(self):
-        return self._exec(['install'])
+        cmd = ['install']
+
+        if self.keep_other_versions:
+            cmd.append('--keep')
+
+        if self.deps_mode:
+            cmd.append('--deps-mode={}'.format(self.deps_mode))
+
+        return self._exec(cmd)
 
     def remove(self):
-        return self._exec(['remove'])
+        cmd = ['remove']
+
+        if self.deps_mode:
+            cmd.append('--deps-mode={}'.format(self.deps_mode))
+
+        return self._exec(cmd)
 
 
 def main():
@@ -167,6 +194,8 @@ def main():
         local=dict(default=False, required=False, type='bool'),
         tree=dict(default=None, required=False, type='path'),
         server=dict(default=None, required=False),
+        override_servers=dict(default=False, required=False, type='bool'),
+        deps_mode=dict(default=None, choices=['all', 'one', 'order', 'none', ]),
     )
     module = AnsibleModule(
         argument_spec=arg_spec,
@@ -181,6 +210,8 @@ def main():
     local = module.params['local']
     tree = module.params['tree']
     server = module.params['server']
+    override_servers = module.params['override_servers']
+    deps_mode = module.params['deps_mode']
 
     luarocks = Luarocks(
         module,
@@ -191,6 +222,8 @@ def main():
         local=local,
         tree=tree,
         server=server,
+        override_servers=override_servers,
+        deps_mode=deps_mode,
     )
 
     changed = False
