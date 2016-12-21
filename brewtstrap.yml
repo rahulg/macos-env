@@ -31,7 +31,6 @@
       - python
       - python3
       - racket
-      - reattach-to-user-namespace
       - ruby
       - rust
       - the_platinum_searcher
@@ -73,6 +72,12 @@
         state=present
       with_items: "{{ brews }}"
 
+    - name: install reattach-to-user-namespace
+      homebrew:
+        name=reattach-to-user-namespace
+        state=present
+        options=with-wrap-launchctl,with-wrap-pbcopy-and-pbpaste
+
     - name: install casks
       homebrew_cask:
         name={{ item }}
@@ -99,22 +104,6 @@
         src={{ item }}
         dest=~/.mjolnir/
       with_fileglob: "mjolnir/*"
-
-    - name: install rtus-run
-      copy:
-        src=rtus-run
-        dest=/usr/local/bin/
-        mode=0755
-
-    - name: symlink rtus-run
-      file:
-        src=rtus-run
-        path=/usr/local/bin/{{ item }}
-        state=link
-        force=yes
-      with_items:
-        - pbcopy
-        - pbpaste
 
     - name: create KeyBindings directory
       file:
