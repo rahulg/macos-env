@@ -116,6 +116,11 @@
         src=DefaultKeyBinding.dict
         dest=~/Library/KeyBindings/DefaultKeyBinding.dict
 
+    - name: install tmux LaunchAgent
+      template:
+        src=io.rahulg.tmux.scratch.plist
+        dest=~/Library/LaunchAgents/io.rahulg.tmux.scratch.plist
+
     - name: install fonts
       synchronize:
         src=fonts/{{ item }}/OTF/

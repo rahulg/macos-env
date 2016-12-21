@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>Label</key>
+		<string>io.rahulg.tmux.scratch</string>
+		<key>ProgramArguments</key>
+		<array>
+			<string>/usr/local/bin/tmux</string>
+			<string>-f</string>
+			<string>{{ ansible_env.HOME }}/.config/tmux/config</string>
+			<string>new-session</string>
+			<string>-ds</string>
+			<string>scratch</string>
+		</array>
+		<key>WorkingDirectory</key>
+		<string>{{ ansible_env.HOME }}/scratch</string>
+		<key>RunAtLoad</key>
+		<true/>
+	</dict>
+</plist>
