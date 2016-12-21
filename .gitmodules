@@ -7,3 +7,6 @@
 [submodule "files/fonts/source-code-pro"]
 	path = files/fonts/source-code-pro
 	url = https://github.com/adobe-fonts/source-code-pro.git
+[submodule "library/ansible-module-luarocks"]
+	path = library/ansible-module-luarocks
+	url = https://github.com/rahulg/ansible-module-luarocks.git
