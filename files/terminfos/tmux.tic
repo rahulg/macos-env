@@ -1,4 +1,3 @@
-#	Reconstructed via infocmp from file: /usr/share/terminfo/t/tmux
 tmux|tmux terminal multiplexer,
 	am, hs, km, mir, msgr, xenl,
 	colors#8, cols#80, it#8, lines#24, pairs#64,

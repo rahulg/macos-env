@@ -1,4 +1,0 @@
-# extend xterm-256color to support italics
-xterm-256color-italic|xterm with 256 colours and italic,
-	sitm=\E[3m, ritm=\E[23m,
-	use=xterm-256color
