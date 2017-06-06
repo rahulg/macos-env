@@ -11,35 +11,39 @@
     brews:
       - ansible
       - bash
-      - clang-format
       - fish
       - flake8
       - git
-      - guile
-      - rahulg/hyv/hyv
+      - go
+      - htop
       - ipcalc
       - lua
+      - mpv
       - mtr
-      - neovim/neovim/neovim
+      - mypy
       - nmap
       - node
-      - opensc
-      - homebrew/dupes/openssh
       - picocom
       - pngnq
       - pwgen
+      - pypy
+      - pypy3
       - python
       - python3
-      - racket
+      - reattach-to-user-namespace
       - ruby
       - rust
-      - the_platinum_searcher
       - tmux
+      - xz
       - youtube-dl
+      - homebrew/dupes/openssh
+      - neovim/neovim/neovim
+      - rahulg/hyv/hyv
 
     casks:
+      - keybase
       - mjolnir
-      - xquartz
+      - visual-studio-code
 
     rocks:
       - mjolnir.hotkey
