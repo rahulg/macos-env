@@ -40,10 +40,6 @@
         state=present
       with_items: "{{ taps }}"
 
-    - name: update brew
-      homebrew:
-        update_homebrew=yes
-
     - name: install brews
       homebrew:
         name={{ item }}
