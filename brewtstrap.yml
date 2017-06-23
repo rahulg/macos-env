@@ -6,58 +6,32 @@
     taps:
       - homebrew/dupes
       - neovim/neovim
-      - rahulg/hyv
 
     brews:
       - ansible
       - bash
       - fish
-      - flake8
       - git
-      - go
       - htop
       - ipcalc
-      - lua
-      - mpv
-      - mtr
       - mypy
-      - nmap
-      - node
       - picocom
-      - pngnq
-      - pwgen
-      - pypy
-      - pypy3
       - python
       - python3
       - reattach-to-user-namespace
-      - ruby
-      - rust
       - tmux
       - xz
       - youtube-dl
-      - homebrew/dupes/openssh
       - neovim/neovim/neovim
-      - rahulg/hyv/hyv
 
     casks:
       - keybase
-      - mjolnir
       - visual-studio-code
-
-    rocks:
-      - mjolnir.hotkey
-      - mjolnir.application
-      - mjolnir.fnutils
-      - mjolnir.geometry
-      - mjolnir.screen
-      - mjolnir.keycodes
 
     fonts:
       - source-code-pro
       - source-sans-pro
       - source-serif-pro
-
 
   tasks:
     - name: tap brew taps
@@ -66,7 +40,7 @@
         state=present
       with_items: "{{ taps }}"
 
-    - name: update brew indices
+    - name: update brew
       homebrew:
         update_homebrew=yes
 
@@ -76,38 +50,11 @@
         state=present
       with_items: "{{ brews }}"
 
-    - name: install reattach-to-user-namespace
-      homebrew:
-        name=reattach-to-user-namespace
-        state=present
-        options=with-wrap-launchctl,with-wrap-pbcopy-and-pbpaste
-
     - name: install casks
       homebrew_cask:
         name={{ item }}
         state=present
       with_items: "{{ casks }}"
-
-    - name: install rocks
-      luarocks:
-        name={{ item }}
-        state=present
-        server=http://rocks.moonscript.org
-      with_items: "{{ rocks }}"
-      become: True
-      become_user: root
-
-    - name: create mjolnir config directory
-      file:
-        path=~/.mjolnir
-        state=directory
-        mode=0755
-
-    - name: install mjolnir config
-      copy:
-        src={{ item }}
-        dest=~/.mjolnir/
-      with_fileglob: "mjolnir/*"
 
     - name: create KeyBindings directory
       file:
