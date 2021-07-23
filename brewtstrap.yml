@@ -3,30 +3,17 @@
   connection: local
 
   vars:
-    taps:
-      - homebrew/dupes
-      - neovim/neovim
-
     brews:
       - ansible
       - bash
       - fish
-      - git
       - htop
-      - ipcalc
-      - mypy
-      - picocom
-      - python
-      - python3
       - reattach-to-user-namespace
       - tmux
-      - xz
-      - youtube-dl
       - neovim/neovim/neovim
 
     casks:
-      - keybase
-      - visual-studio-code
+      - karabiner-elements
 
     fonts:
       - source-code-pro
@@ -34,12 +21,6 @@
       - source-serif-pro
 
   tasks:
-    - name: tap brew taps
-      homebrew_tap:
-        name={{ item }}
-        state=present
-      with_items: "{{ taps }}"
-
     - name: install brews
       homebrew:
         name={{ item }}
@@ -62,11 +43,6 @@
       copy:
         src=DefaultKeyBinding.dict
         dest=~/Library/KeyBindings/DefaultKeyBinding.dict
-
-    - name: install tmux LaunchAgent
-      template:
-        src=io.rahulg.tmux.scratch.plist
-        dest=~/Library/LaunchAgents/io.rahulg.tmux.scratch.plist
 
     - name: install fonts
       synchronize:

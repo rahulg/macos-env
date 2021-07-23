@@ -10,12 +10,12 @@ function defer() {
 
 function strap_brew() {
 	if [[ ! -f /usr/local/bin/brew ]]; then
-		local install_rb=$(mktemp)
-		echo ${install_rb}
-		defer "rm ${install_rb}"
-		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install -o ${install_rb}
-		less ${install_rb}
-		ruby ${install_rb}
+		local install_sh=$(mktemp)
+		echo ${install_sh}
+		defer "rm ${install_sh}"
+		curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh	-o {install_sh}
+		less ${install_sh}
+		bash ${install_sh}
 	fi
 }
 
